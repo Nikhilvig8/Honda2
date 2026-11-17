@@ -1,0 +1,76 @@
+HONDA LOGO CHANGE - UAT DEPLOYMENT STEPS
+VI Regulation, Case 1: Corporate Logo (source: IT USAGE_Customer Eng_SMAART.pptx, slide 12)
+Date: 17-Nov-2026
+Only 2 image files change. No view, DLL, Web.config or SQL change. No website restart.
+
+FILES
+  assets\logo\Honda-logo-home.png   (200x26)  Dashboard header, Forgot Password, MFA page
+  assets\iframelogo\HondaRed.png    (600x77)  Login page
+
+===============================================================
+STEP 1 - UPLOAD TO GITHUB (on your local PC)
+===============================================================
+1. Open the repository on github.com in the browser.
+2. Click  Add file > Upload files.
+3. Drag the whole folder  D:\HONDA2\Logo_Change_Package  into the page.
+4. Commit message: "Logo change package (VI regulation)" > Commit changes.
+
+===============================================================
+STEP 2 - DOWNLOAD ON THE UAT SERVER (hcilsmaartuat)
+===============================================================
+1. On the UAT server, open the same repository on github.com.
+2. Open Logo_Change_Package > assets > logo > Honda-logo-home.png
+   > click the Download (raw) button. Save to  C:\Deploy\Logo_20261117\logo\
+3. Open Logo_Change_Package > assets > iframelogo > HondaRed.png
+   > Download. Save to  C:\Deploy\Logo_20261117\iframelogo\
+4. Open both files once to check they show the red HONDA logo.
+
+===============================================================
+STEP 3 - FIND THE WEBSITE FOLDER
+===============================================================
+1. Press Win+R, type  inetmgr , press Enter (IIS Manager).
+2. Expand Sites > right-click the SMAART site (port 1010) > Explore.
+3. This is the WEBSITE FOLDER (same one used on 12-Nov deployment).
+
+===============================================================
+STEP 4 - RENAME THE OLD LOGOS (backup)
+===============================================================
+1. In the WEBSITE FOLDER open  assets\logo\
+   Right-click Honda-logo-home.png > Rename >  Honda-logo-home_old_logo.png
+2. In the WEBSITE FOLDER open  assets\iframelogo\
+   Right-click HondaRed.png > Rename >  HondaRed_old_logo.png
+   (Optional extra safety: also copy both old files to C:\Deploy\Logo_20261117\backup\)
+
+===============================================================
+STEP 5 - COPY THE NEW LOGOS
+===============================================================
+1. Copy  C:\Deploy\Logo_20261117\logo\Honda-logo-home.png
+   into  WEBSITE FOLDER\assets\logo\
+2. Copy  C:\Deploy\Logo_20261117\iframelogo\HondaRed.png
+   into  WEBSITE FOLDER\assets\iframelogo\
+3. Check the names are EXACTLY  Honda-logo-home.png  and  HondaRed.png
+   (Windows may add " (1)" to downloaded files - remove it).
+
+===============================================================
+STEP 6 - TEST
+===============================================================
+1. Open the SMAART UAT site and press Ctrl+F5 (images are cached).
+2. Check:
+   [ ] Login page - red HONDA logo, no "The Power of Dreams"
+   [ ] Dashboard (after login) - HONDA logo top-left, size looks right
+   [ ] Forgot Password page
+   [ ] MFA page (if enabled)
+   [ ] SMAART logo top-right unchanged
+3. If the logo looks too small/large, take a screenshot and share it -
+   only the image needs resizing, no code change.
+
+===============================================================
+ROLLBACK (back to old logo)
+===============================================================
+1. WEBSITE FOLDER\assets\logo\
+     Rename Honda-logo-home.png           -> Honda-logo-home_new_logo.png
+     Rename Honda-logo-home_old_logo.png  -> Honda-logo-home.png
+2. WEBSITE FOLDER\assets\iframelogo\
+     Rename HondaRed.png                  -> HondaRed_new_logo.png
+     Rename HondaRed_old_logo.png         -> HondaRed.png
+3. Ctrl+F5 in the browser.
